@@ -59,7 +59,7 @@ export default function App() {
             component={Tabs}
             options={{ headerShown: false }}
           />
-          <Stack.Screen name="Details" component={EventDetailsScreen} />
+          <Stack.Screen name="EventDetails" component={EventDetailsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

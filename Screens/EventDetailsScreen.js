@@ -12,6 +12,19 @@ export default function EventDetailsScreen({ route, navigation }) {
   );
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, justifyContent: 'center', alignItems: 'center' },
   title: { fontSize: 24, fontWeight: '600', marginBottom: 8 },
