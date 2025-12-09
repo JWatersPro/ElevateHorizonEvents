@@ -2,11 +2,41 @@ import * as React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 
 export default function EventDetailsScreen({ route, navigation }) {
-  const { user = 'Guest' } = route.params ?? {};
+  // const { user = 'Guest' } = route.params ?? {};
+  const { event } = route.params ?? {}
+
+  if (!event) {
+return (
+<View style={styles.container}>
+<Text style={styles.sub}>No event data available.</Text>
+{/* <Button title="Go Back" onPress={() => navigation.goBack()} /> */}
+</View>
+);
+}
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Details</Text>
-      <Text style={styles.sub}>User: {user}</Text>
+      {/* <Text style={styles.sub}>User: {user}</Text> */}
+
+      <Text style={styles.title}>{event.title ?? 'Details'}</Text>
+      {/* <Button title="Go Back" onPress={() => navigation.goBack()} /> */}
+
+
+
+
+  <Text style={styles.sub}>Date: {event.date ?? ''}</Text>
+
+  <Text style={styles.sub}>Time: {event.startTime ?? ''} - {event.endTime ?? ''}</Text>
+
+  <Text style={styles.sub}>Location: {event.location ?? ''}</Text>
+
+  <Text style={styles.sub}>Category: {event.category ?? ''}</Text>
+
+  <Text style={styles.sub}>Spots Remaining: {event.spotsRemaining ?? ''}</Text>
+
+
+<Button title="Register"  onPress={() => navigation.navigate('EventRegister', { event })} />
+  
       <Button title="Go Back" onPress={() => navigation.goBack()} />
     </View>
   );

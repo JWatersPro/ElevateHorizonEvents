@@ -60,6 +60,8 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen name="EventDetails" component={EventDetailsScreen} />
+          <Stack.Screen name="EventRegister" component={EventRegisterScreen} options={{ title: 'Register' }} />
+          <Stack.Screen name="EventsListScreen" component={EventsListScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
