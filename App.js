@@ -14,6 +14,16 @@ import EventsListScreen from './Screens/EventsListScreen';
 import ErrorLoadingScreen from './Screens/ErrorLoadingScreen';
 import EventRegisterScreen from './Screens/EventRegisterScreen';
 
+
+// THEME 
+// export const ThemeContext = React.createContext({
+//   isDark: false,
+//   toggleTheme: () => {},
+//   fontSize: 'medium',
+//   setFontSize: () => {},
+// });
+
+
 //ANCHOR - Primary Nav Approach
 const Tab = createBottomTabNavigator();
 //ANCHOR - Sub Nav Approach
@@ -50,6 +60,35 @@ function Tabs() {
 
 //SECTION - Main APP wrapper
 export default function App() {
+  
+//   const [isDark, setIsDark] = React.useState(false);
+//   const [fontSize, setFontSize] = React.useState('medium'); // 'small' | 'medium' | 'large'
+
+//   const theme = React.useMemo(() => {
+//     const baseTheme = isDark ? MD3DarkTheme : MD3LightTheme;
+//     const fontMap = { small: 14, medium: 18, large: 22 };
+
+// return {
+//       ...baseTheme,
+//       fonts: {
+//         ...baseTheme.fonts,
+//         bodyLarge: { ...baseTheme.fonts.bodyLarge, fontSize: fontMap[fontSize] },
+//         bodyMedium: { ...baseTheme.fonts.bodyMedium, fontSize: fontMap[fontSize] * 0.9 },
+//         bodySmall: { ...baseTheme.fonts.bodySmall, fontSize: fontMap[fontSize] * 0.8 },
+//       },
+//     };
+//   }, [isDark, fontSize]);
+
+//   const themeCtx = React.useMemo(
+//     () => ({
+//       isDark,
+//       toggleTheme: () => setIsDark(prev => !prev),
+//       fontSize,
+//       setFontSize,
+//     }),
+//     [isDark, fontSize]
+//   );
+
   return (
     <PaperProvider>
       <NavigationContainer>

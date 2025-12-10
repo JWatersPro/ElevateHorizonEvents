@@ -62,7 +62,7 @@ const sampleEvents = [
   {
     id: 5,
     title: "Spin Cycling Class",
-    date: "2025-12-10",
+    date: "2025-12-11",
     startTime: "07:30",
     endTime: "08:30",
     location: "Community Hall A",
@@ -99,16 +99,27 @@ export default function EventsListScreen({ navigation }) {
   
   
   
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }) => {
+  const spotsText = item.isCancelled
+    ? 'CANCELLED'
+    : `Spots Remaining: ${item.spotsRemaining}`;
+
+  return (
     <List.Item
       title={item.title.replace(' REMOTE', '')}
-      description={`${item.date} • ${item.startTime}-${item.endTime}\n${item.location}\nCategory: ${item.category}\nSpots Remaining: ${item.spotsRemaining}`}
+      description={
+        `${item.date} • ${item.startTime}-${item.endTime}` +
+        `\n${item.location}` +
+        `\nCategory: ${item.category}` +
+        `\n${spotsText}`
+      }
       titleNumberOfLines={1}
       descriptionNumberOfLines={4}
       style={styles.listItem}
       onPress={() => navigation.navigate('EventDetails', { event: item })}
     />
   );
+};
 
   {/*Displays the remote data when loaded but displays the sample when remote data loading fails*/}
   {/*const displayEvents = events.length > 0 ? events : sampleEvents;*/}
