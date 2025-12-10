@@ -1,10 +1,10 @@
 //ANCHOR What I need for this page Title, date, time, location, category, spots remaining; filter & search.
 
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, List, Divider, TextInput  } from 'react-native-paper';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { Text, List, Divider, TextInput, Button  } from 'react-native-paper';
 
-
+const JSON_URL = 'https://tafeshaun.github.io/elevate-data/events.json';
 
 const sampleEvents = [
   {
@@ -30,7 +30,14 @@ const sampleEvents = [
 ];
 
 export default function EventsListScreen({ navigation }) {
-   const renderItem = ({ item }) => (
+  const [events, setEvents] = React.useState([]);        //Events
+  const [loading, setLoading] = React.useState(false);   //Loading
+  const [errorMsg, setErrorMsg] = React.useState('');    //Errors
+  
+  
+  
+  
+  const renderItem = ({ item }) => (
     <List.Item
       title={item.title}
       description={`${item.date} • ${item.startTime}-${item.endTime}\n${item.location}\nCategory: ${item.category}\nSpots Remaining: ${item.spotsRemaining}`}
@@ -41,6 +48,56 @@ export default function EventsListScreen({ navigation }) {
     />
   );
 
+  const displayEvents = events.length > 0 ? events : sampleEvents;
+
+
+const loadRemote = React.useCallback(async () => {
+    try {
+      setLoading(true);
+      setErrorMsg('')
+      const request = await fetch(JSON_URL, {cache: 'no-store'})
+      if(!request.ok) throw new Error(`HTTP ${request.status}`);
+
+      const jsonReq = await request.json();
+      console.log('RAW JSON:', jsonReq); 
+
+      const arrReq = Array.isArray(jsonReq) ? jsonReq : [];
+      console.log('ARRAY LENGTH:', arrReq.length);
+
+      // Clean + store remote tasks
+      const cleaned = arrReq.filter(
+        (x) => x && typeof x.id !== 'undefined' && typeof x.title === 'string'
+      );
+      setEvents(cleaned);
+      console.log('REMOTE DATA:', cleaned); 
+      //SEARCH HERE?
+    }
+    catch (e) {
+      console.error(e);
+      setErrorMsg('Failed to load remote data');
+    }
+    finally {
+      setLoading(false);
+    }
+  }, 
+  []);
+
+React.useEffect(() => {
+    loadRemote();
+  }, [loadRemote]);
+
+if (loading) {
+  return (
+    <View style={styles.center}>
+      <ActivityIndicator animating size="large" />
+      <Text style={styles.marg16}>Loading events…</Text>
+    </View>
+  );
+}
+
+
+
+
 
 
 
@@ -48,10 +105,15 @@ export default function EventsListScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {sampleEvents.map(event => (
+     {/* * {sampleEvents.map(event => (
         <React.Fragment key={event.id}>
           {renderItem({ item: event })}
-          <Divider />
+          <Divider />*/}
+
+          {displayEvents.map((event, index) => (
+        <React.Fragment key={event.id}>
+          {renderItem({ item: event })}
+          {index < displayEvents.length - 1 && <Divider />}
         </React.Fragment>
       ))}
     </View>
