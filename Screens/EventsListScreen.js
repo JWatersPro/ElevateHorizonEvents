@@ -9,25 +9,86 @@ const JSON_URL = 'https://tafeshaun.github.io/elevate-data/events.json';
 const sampleEvents = [
   {
     id: '1',
-    title: 'Morning Yoga',
-    date: '2025-11-28',
+    title: 'Squash',
+    date: '2025-12-13',
     startTime: '08:00',
     endTime: '09:00',
     location: 'Community Hall',
     category: 'Fitness',
+    description: 'Competitive squash matches and coaching for all skill levels.',
+    capacity: 20,
     spotsRemaining: 12,
+    isCancelled: true
   },
   {
     id: '2',
     title: 'Scrabble',
-    date: '2025-11-29',
+    date: '2025-12-29',
     startTime: '19:00',
     endTime: '22:00',
     location: 'Library',
     category: 'Entertainment',
+    description: 'Weekly Scrabble tournament with prizes for top scorers.',
+    capacity: 25,
     spotsRemaining: 5,
-    isCancelled: true,
+    isCancelled: true
   },
+  {
+    id: 3,
+    title: "Live Jazz Night",
+    date: "2025-12-21",
+    startTime: "19:30",
+    endTime: "21:30",
+    location: "Community Hall A",
+    category: "Entertainment",
+    description: "Smooth jazz performances by local musicians.",
+    capacity: 50,
+    spotsRemaining: 20,
+    isCancelled: false
+  },
+  {
+    id: 4,
+    title: "Comedy Open Mic",
+    date: "2025-12-22",
+    startTime: "20:00",
+    endTime: "22:00",
+    location: "Community Hall B",
+    category: "Entertainment",
+    description: "Amateur and pro comedians share laughs.",
+    capacity: 40,
+    spotsRemaining: 15,
+    isCancelled: false
+  },
+  {
+    id: 5,
+    title: "Spin Cycling Class",
+    date: "2025-12-10",
+    startTime: "07:30",
+    endTime: "08:30",
+    location: "Community Hall A",
+    category: "Fitness",
+    description: "Indoor cycling session with interval training.",
+    capacity: 20,
+    spotsRemaining: 10,
+    isCancelled: true
+  },
+  {
+    id: 6,
+    title: "Beginner CrossFit",
+    date: "2025-12-015",
+    startTime: "06:30",
+    endTime: "07:30",
+    location: "Community Hall C",
+    category: "Fitness",
+    description: "Beginner CrossFit with scaled movements and coaching.",
+    capacity: 18,
+    spotsRemaining: 7,
+    isCancelled: false
+  }
+
+
+
+
 ];
 
 export default function EventsListScreen({ navigation }) {

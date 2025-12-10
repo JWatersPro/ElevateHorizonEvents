@@ -2,24 +2,119 @@
 // import * as React from 'react';
 import React, { useState, useEffect } from 'react';
 
-import {View, StyleSheet, Image, ScrollView, FlatList} from 'react-native';
+import {View, StyleSheet, Image, ScrollView, FlatList, RefreshControl, TouchableOpacity } from 'react-native';
 import {Text, Button, Divider, Card,} from 'react-native-paper';
 
 //TODO Fix image Aspect Ratio
 const IMAGE_ASPECT_RATIO = 2;
 
-//try adding hard coded event 
+//ANCHOR Sample Events
+const sampleEvents = [
+  {
+    id: '1',
+    title: 'Squash',
+    date: '2025-12-13',
+    startTime: '08:00',
+    endTime: '09:00',
+    location: 'Community Hall',
+    category: 'Fitness',
+    description: 'Competitive squash matches and coaching for all skill levels.',
+    capacity: 20,
+    spotsRemaining: 12,
+    isCancelled: true
+  },
+  {
+    id: '2',
+    title: 'Scrabble',
+    date: '2025-12-29',
+    startTime: '19:00',
+    endTime: '22:00',
+    location: 'Library',
+    category: 'Entertainment',
+    description: 'Weekly Scrabble tournament with prizes for top scorers.',
+    capacity: 25,
+    spotsRemaining: 5,
+    isCancelled: true
+  },
+  {
+    id: 3,
+    title: "Live Jazz Night",
+    date: "2025-12-21",
+    startTime: "19:30",
+    endTime: "21:30",
+    location: "Community Hall A",
+    category: "Entertainment",
+    description: "Smooth jazz performances by local musicians.",
+    capacity: 50,
+    spotsRemaining: 20,
+    isCancelled: false
+  },
+  {
+    id: 4,
+    title: "Comedy Open Mic",
+    date: "2025-12-22",
+    startTime: "20:00",
+    endTime: "22:00",
+    location: "Community Hall B",
+    category: "Entertainment",
+    description: "Amateur and pro comedians share laughs.",
+    capacity: 40,
+    spotsRemaining: 15,
+    isCancelled: false
+  },
+  {
+    id: 5,
+    title: "Spin Cycling Class",
+    date: "2025-12-10",
+    startTime: "07:30",
+    endTime: "08:30",
+    location: "Community Hall A",
+    category: "Fitness",
+    description: "Indoor cycling session with interval training.",
+    capacity: 20,
+    spotsRemaining: 10,
+    isCancelled: true
+  },
+  {
+    id: 6,
+    title: "Beginner CrossFit",
+    date: "2025-12-015",
+    startTime: "06:30",
+    endTime: "07:30",
+    location: "Community Hall C",
+    category: "Fitness",
+    description: "Beginner CrossFit with scaled movements and coaching.",
+    capacity: 18,
+    spotsRemaining: 7,
+    isCancelled: false
+  }
 
+
+
+
+];
 //NOTE MAIN body Component for the Home Screen 
 export default function HomeScreen({ navigation }) {
 
 
     const [allEvents, setAllEvents] = useState([]); 
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+    
     const getTodayEvents = (events) => {
     const today = new Date().toISOString().split('T')[0];
     return events.filter(event => event.date === today).slice(0, 3);
     };
+
+      const getRandomEvents = (events) => {
+    if (events.length === 0) return sampleEvents.slice(0, 3);
+    
+    const remoteEvents = events.filter(e => !sampleEvents.some(s => s.id === e.id));
+    const samples = sampleEvents.slice(0, 2);
+    
+    const mixed = [...samples, ...remoteEvents.slice(0, 2)];
+    return mixed.sort(() => 0.5 - Math.random()).slice(0, 4);
+  };
 
     useEffect(() => {
             fetchEvents();
@@ -39,11 +134,21 @@ export default function HomeScreen({ navigation }) {
         };
 
 
-const getRandomEvents = (events) => {
-        if (events.length === 0) return [];
-        const shuffled = [...events].sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, 3);
-    };
+// const getRandomEvents = (events) => {
+//         if (events.length === 0) return [];
+//         const shuffled = [...events].sort(() => 0.5 - Math.random());
+//         return shuffled.slice(0, 3);
+//     };
+
+useEffect(() => {
+    fetchEvents();
+  }, []);
+
+   const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchEvents();
+    setRefreshing(false);
+  };
 
 if (loading) {
         return (
@@ -54,7 +159,9 @@ if (loading) {
     }
 
     return (
-        <ScrollView style={styles.scrollContainer}>
+         <ScrollView style={styles.scrollContainer}refreshControl={<RefreshControl refreshing={refreshing}onRefresh={onRefresh}progressViewOffset={80}/>
+      }
+    >
         <View style= {styles.container}>
             <Image source={require('./EHCLogo.jpg')} style={styles.logoImage}/>
             <Text variant='headlineMedium' style = {styles.homeMarg}>Home</Text>
@@ -73,65 +180,51 @@ if (loading) {
         </Button>
 
 {/**/}
-        {/*This is the Carousel to display todays events*/} 
-        <View style={styles.todayCarouselContainer}>
-        <Text style={styles.sectionTitle}>Today's Events</Text>
-        <FlatList
-            data={getTodayEvents(allEvents)}  
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            ListEmptyComponent={
-            <View style={styles.emptyTodayCard}>
-                <Text style={styles.emptyText}>No events today</Text>
-                <Text style={styles.emptySubtext}>Check back tomorrow!</Text>
-            </View>
-            }
-            renderItem={({ item }) => (
-            <View style={styles.carouselCard}>
-                <Text style={styles.carouselTitle}>{item.title}</Text>
-                <Text style={styles.carouselTime}>{item.startTime}-{item.endTime}</Text>
-                <Text style={styles.carouselSpots}>{item.spotsRemaining} spots</Text>
-            </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-        />
-        </View>
+        
 
 
 
         {/*This is the Carousel to dsiplay Featured events*/}
         <View style={styles.carouselContainer}>
-        <Text style={styles.sectionTitle}>Featured Events</Text>
-                <FlatList
-                     data={getRandomEvents(allEvents)} 
-                    horizontal
-                    pagingEnabled
-                    showsHorizontalScrollIndicator={false}
-                    ListEmptyComponent={
-                        <Text style={styles.carouselLabel}>No events available</Text>
-                    }
-                    renderItem={({ item }) => (
-                        <View style={styles.carouselCard}>
-                            <Text style={styles.carouselTitle}>{item.title}</Text>
-                            <Text>{item.startTime} - {item.endTime}</Text>
-                            <Text style={styles.carouselSpots}>
-                                {item.spotsRemaining} spots
-                            </Text>
-                        </View>
-                    )}
-                    keyExtractor={(item, index) => index.toString()}  
-                />
-                <Text style={styles.carouselLabel}>Swipe for Today's Events (F1)</Text>
-                <Button 
-                    mode="contained"
-                    onPress={() => navigation.navigate('EventsListScreen')}
-                    style={styles.carouselButton}
-                >
-                    View All Events →
-                </Button>
-            </View>
-
+            <Text style={styles.sectionTitle}>Featured Events</Text>
+            <FlatList
+                data={getRandomEvents(allEvents)}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                
+                ListEmptyComponent={
+                <Text style={styles.carouselLabel}>No events available</Text>
+                }
+  renderItem={({ item }) => (
+  <TouchableOpacity 
+      style={styles.carouselCard}
+      onPress={() => navigation.navigate('EventDetails', { event: item })}
+      activeOpacity={0.8}
+    >
+    
+      <Text style={styles.carouselTitle}>{item.title.replace(' REMOTE', '')}</Text>
+      <Text style={styles.carouselTime}>{item.startTime} - {item.endTime}</Text>
+      <Text style={styles.carouselDate}>{new Date(item.date).toLocaleDateString('en-AU', { 
+    day: 'numeric', 
+    month: 'numeric', 
+    year: 'numeric' 
+  })}</Text>
+      <Text style={styles.carouselSpots}>{item.spotsRemaining} spots</Text>
+    </TouchableOpacity>
+  )}
+  keyExtractor={(item, index) => item.id || index.toString()}
+  
+/>
+  <Text style={styles.carouselLabel}>Swipe for Featured Events</Text>
+  <Button 
+    mode="contained"
+    onPress={() => navigation.navigate('EventsListScreen')}
+    style={styles.carouselButton}
+  >
+    View All Events →
+  </Button>
+</View>
           
     
 
@@ -212,7 +305,7 @@ const styles = StyleSheet.create({
 },
    
 
-
+//ANCHOR Carsousel Styles
 carouselContainer: {
   marginVertical: 16,
   alignItems: 'center',
@@ -243,7 +336,7 @@ carouselTime: {
 },
 carouselDate: {
   fontSize: 14,
-  color: '#999',
+  color: '#8d8787ff',
   marginBottom: 8,
 },
 carouselSpots: {
@@ -260,22 +353,20 @@ carouselButton: {
   marginTop: 12,
 },
 
-
- 
-
-todayCarouselContainer: {
-  marginVertical: 24,
-  alignItems: 'center',
-},
 sectionTitle: {
   fontSize: 20,
   fontWeight: '700',
   marginBottom: 12,
   textAlign: 'center',
 },
+
+
+
+
+
 emptyTodayCard: {
   width: 280,
-  height: 180,        // ⭐ SAME HEIGHT always
+  height: 180,        
   padding: 24,
   backgroundColor: 'white',
   borderRadius: 16,
@@ -293,6 +384,7 @@ emptySubtext: {
   fontSize: 14,
   color: '#999',
 },
+
 
 
 
@@ -357,4 +449,4 @@ emptySubtext: {
 
 
 
-//ANCHOR What I need for this page App logo, welcome message, “View Today’s Events” shortcut.
+//ANCHOR What I need for this page App logo, welcome message, “View
