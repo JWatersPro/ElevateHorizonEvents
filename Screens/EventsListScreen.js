@@ -1,7 +1,7 @@
 //ANCHOR What I need for this page Title, date, time, location, category, spots remaining; filter & search.
 
 import * as React from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, ScrollView  } from 'react-native';
 import { Text, List, Divider, TextInput, Button  } from 'react-native-paper';
 
 const JSON_URL = 'https://tafeshaun.github.io/elevate-data/events.json';
@@ -26,6 +26,7 @@ const sampleEvents = [
     location: 'Library',
     category: 'Entertainment',
     spotsRemaining: 5,
+    isCancelled: true,
   },
 ];
 
@@ -39,7 +40,7 @@ export default function EventsListScreen({ navigation }) {
   
   const renderItem = ({ item }) => (
     <List.Item
-      title={item.title}
+      title={item.title.replace(' REMOTE', '')}
       description={`${item.date} • ${item.startTime}-${item.endTime}\n${item.location}\nCategory: ${item.category}\nSpots Remaining: ${item.spotsRemaining}`}
       titleNumberOfLines={1}
       descriptionNumberOfLines={4}
@@ -48,8 +49,16 @@ export default function EventsListScreen({ navigation }) {
     />
   );
 
-  const displayEvents = events.length > 0 ? events : sampleEvents;
+  {/*Displays the remote data when loaded but displays the sample when remote data loading fails*/}
+  {/*const displayEvents = events.length > 0 ? events : sampleEvents;*/}
 
+{/*Dsiplays both remote and sample events together*/}
+  const displayEvents = [...sampleEvents, ...events];
+
+  const [q, setQ] = React.useState('');
+const filteredEvents = displayEvents.filter((event) =>
+  (event.title ?? '').toLowerCase().includes(q.toLowerCase())
+);
 
 const loadRemote = React.useCallback(async () => {
     try {
@@ -110,12 +119,32 @@ if (loading) {
           {renderItem({ item: event })}
           <Divider />*/}
 
-          {displayEvents.map((event, index) => (
+      <ScrollView
+      contentContainerStyle={styles.scrollContent}
+      keyboardShouldPersistTaps="handled"
+      >
+
+      <TextInput 
+        label="Search events"
+        value={q}
+        onChangeText={setQ}
+        mode="outlined"
+        left={<TextInput.Icon icon="magnify" />}
+        style={styles.searchInput}
+      />
+
+          {filteredEvents.map((event, index) => (
         <React.Fragment key={event.id}>
           {renderItem({ item: event })}
-          {index < displayEvents.length - 1 && <Divider />}
+          {index < filteredEvents.length - 1 && <Divider />}
         </React.Fragment>
       ))}
+
+          <Button mode="outlined" onPress={loadRemote} icon="refresh">
+            Refresh Events
+          </Button>
+
+       </ScrollView>
     </View>
   );
 }
@@ -129,7 +158,46 @@ if (loading) {
 
   //SECTION StyleSheet
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  searchInput: { marginBottom: 12 },
-  listItem: { paddingVertical: 8 },
+  container: { 
+    flex: 1, 
+    padding: 20, 
+    paddingHorizontal: 20,    
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',},
+
+  scrollContent: {            
+    paddingBottom: 40,
+  },
+
+  formRow: {                  
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'center',
+    marginBottom: 16
+  },
+
+  marg16: { 
+    marginBottom: 16 
+  },  
+
+  input: { 
+    flex: 1, 
+    margin: 5 }, 
+
+  searchInput: {
+    marginTop: 8,
+    marginBottom: 24,
+  },
+
+  searchInput: {
+     marginTop: 50,
+     marginBottom: 24 
+    },
+
+  listItem: {
+     paddingVertical: 8 
+    },
 });
+
+
+{/**/}
