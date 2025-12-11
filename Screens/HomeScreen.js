@@ -136,11 +136,7 @@ export default function HomeScreen({ navigation }) {
         };
 
 
-// const getRandomEvents = (events) => {
-//         if (events.length === 0) return [];
-//         const shuffled = [...events].sort(() => 0.5 - Math.random());
-//         return shuffled.slice(0, 3);
-//     };
+
 
 useEffect(() => {
     fetchEvents();
@@ -353,7 +349,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Georgia',
     fontSize: 28,
     fontWeight: '700',
-    color: '#424754',   // Charcoal
+    color: '#424754',  
     textAlign: 'center',
     letterSpacing: -0.5,
     marginBottom: 8,
@@ -386,14 +382,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8f9ff'
     },
    
-    // buttons:{
-    //     marginVertical: 12,
-    //     paddingVertical: 8,
-    //     paddingHorizontal: 24,
-    //     borderRadius: 12,
-    //     buttonColor: "#3CA6E5",    
-    //     textColor: "#FFFFFF"
-    // },
+  
 
     welcomeContainer: {
     alignItems: 'center',
@@ -544,7 +533,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',
-    //   color: todayEvent?.isCancelled ? '#f44336' : '#4CAF50',
+   
     },
 
 
@@ -587,23 +576,6 @@ const styles = StyleSheet.create({
 }
 );
 
-/*Code Graveyard
-    <Button mode ='contained'onPress={ () => navigation.navigate('Details',{user})}>
-        Go to Details
-    </Button>
-
-    <Divider style = {styles.divider} />
-
-    <Button mode='outlined' icon='camera' onPress={() => {}}>
-        Go to Gallery
-    </Button>
-
-
-
-
-    OLD title CSS for text on react native core
-    title: { fontSize: 24, fontWeight: '600', marginBottom: 12 },
-*/
 
 
 

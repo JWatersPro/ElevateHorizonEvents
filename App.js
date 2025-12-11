@@ -15,13 +15,7 @@ import ErrorLoadingScreen from './Screens/ErrorLoadingScreen';
 import EventRegisterScreen from './Screens/EventRegisterScreen';
 
 
-// THEME 
-// export const ThemeContext = React.createContext({
-//   isDark: false,
-//   toggleTheme: () => {},
-//   fontSize: 'medium',
-//   setFontSize: () => {},
-// });
+
 
 
 //ANCHOR - Primary Nav Approach
