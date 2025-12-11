@@ -79,7 +79,7 @@ return (
       {/* Status */}
       <View style={styles.detailRow}>
         <Text style={styles.sub}>Status:</Text>
-        <Text style={[styles.info, event.isCancelled && styles.cancelled]}>
+        <Text style={[styles.info, styles.avalible, event.isCancelled && styles.cancelled]}>
           {event.isCancelled ? 'Cancelled' : 'Available'}
         </Text>
       </View>
@@ -153,6 +153,10 @@ detailRow: {
     color: '#f44336',
   },
   
+  avalible: {
+    color: '#006B3C'
+  },
+
   detailRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
