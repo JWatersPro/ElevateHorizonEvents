@@ -29,3 +29,6 @@ Tech Stack:	[Current Technology List]
 
 Project Status:	
 Full UI/UX implementation with wireframe fidelity, global theming, navigation flows, error handling. 
+
+
+Repository History: Migrated from development account (JacindaTafe/MobileDev_Project_Jacinda_W) to portfolio repository (JWatersPro/ElevateHorizonEvents) while preserving full commit history.
